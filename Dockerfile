@@ -13,20 +13,6 @@ RUN wget -O gost.gz "https://github.com/ginuerzh/gost/releases/download/v2.11.5/
 COPY start.sh /app/start.sh
 RUN chmod +x /app/start.sh
 
-# 设置环境变量
-ENV WARP_LICENSE=BV4o592e-4tW9C13f-hM30P57Y
-
-# 创建一个脚本来注册 Cloudflare WARP 并运行 start.sh
-RUN echo '#!/bin/bash\n\
-if [ -z "$WARP_LICENSE" ]; then\n\
-  echo "WARP_LICENSE 环境变量未设置"\n\
-  exit 1\n\
-fi\n\
-yes | warp-cli register\n\
-yes | warp-cli set-license $WARP_LICENSE\n\
-/bin/bash /app/start.sh' > /app/run.sh \
-&& chmod +x /app/run.sh
-
 EXPOSE 1080
 
-CMD [ "/bin/bash", "/app/run.sh" ]
+CMD [ "/bin/bash", "/app/start.sh" ]
